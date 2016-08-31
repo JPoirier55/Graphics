@@ -6,7 +6,9 @@ public class Main {
 
     public static void main(String[] args) {
         Model m = new Model();
-        m.loadPoints("assets/cube.ply");
+        FileManager fileManager = new FileManager(args[0]);
+        fileManager.loadPoints(m.vertices, m.plyMeta);
         m.print(m.vertices);
+        m.print_meta(m.plyMeta);
     }
 }
