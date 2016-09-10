@@ -6,7 +6,8 @@ public class Main {
 
     public static void main(String[] args) {
         Model model = new Model();
-        FileManager fileManager = new FileManager(args[1]);
+        FileManager fileManager = new FileManager(args[0]);
+        String fileName = cleanFileName(args[0]);
         fileManager.loadPoints(model);
 
         // Before centering
@@ -18,21 +19,26 @@ public class Main {
         model.centerModel();
         model.setMeta();
         model.setStandardDeviations();
-        fileManager.writePoints(model, "cube_centered.ply");
+        fileManager.writePoints(model, fileName + "_centered.ply");
         printManager(model, "=== After centering ");
 
         // After whitening
         model.whitenModel();
         model.setMeta();
         model.setStandardDeviations();
-        fileManager.writePoints(model, "cow_rounded.ply");
+        fileManager.writePoints(model, fileName + "_rounded.ply");
         printManager(model, "=== After whitening ");
 
-        boolean debug = true;
+        boolean debug = false;
 
         if (debug){
             System.out.println("Args: " + args[0] + " " + args[1]);
         }
+    }
+    private static String cleanFileName(String fileName){
+        fileName = fileName.split("/")[fileName.split("/").length-1];
+        fileName = fileName.replace(".ply", "");
+        return fileName;
     }
 
     private static void printManager(Model model, String extraStr){

@@ -1,8 +1,6 @@
 package com.graphics.objects;
 
 import java.io.*;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,7 +31,9 @@ public class FileManager {
                 writer.write(model.metaData.get(i) + '\n');
             }
             for (int i = 0; i < model.vertices.size(); i++){
-                writer.write(model.vertices.get(i).getX() + " " + model.vertices.get(i).getY() + " " + model.vertices.get(i).getZ() + "\n");
+                writer.write(model.vertices.get(i).getX() + " " +
+                        model.vertices.get(i).getY() + " " +
+                        model.vertices.get(i).getZ() + "\n");
             }
             for (int i = 0; i < model.faces.size(); i++){
                 writer.write(model.faces.get(i).toString() + "\n");
@@ -73,8 +73,9 @@ public class FileManager {
                             Double z = scan.nextDouble();
                             Point3D tempPoint = new Point3D(x, y, z);
                             model.vertices.add(tempPoint);
+                            scan.nextLine();
                         }
-                        scan.nextLine();
+
                         for (int i = 0; i < model.faceNum; i++) {
                             Scanner str = new Scanner(scan.nextLine());
                             Face face = new Face();
