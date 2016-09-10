@@ -18,7 +18,6 @@ public class Model {
     public ArrayList<Face> faces = new ArrayList<>();
 
     public ArrayList<String> metaData = new ArrayList<>();
-
     public ArrayList<Point3D> centerVertices = new ArrayList<>();
     public ArrayList<Point3D> whitenedVertices = new ArrayList<>();
 
@@ -68,7 +67,9 @@ public class Model {
         yAve = ySum / vertices.size();
         zAve = zSum / vertices.size();
 
-        meanVertex = new Point3D(xAve, yAve, zAve);
+        meanVertex = new Point3D((double)Math.round(xAve*1000000d)/1000000d,
+                (double)Math.round(yAve*1000000d)/1000000d,
+                (double)Math.round(zAve*1000000d)/1000000d);
         String xBounds = xMin + " <= x <= " + xMax;
         String yBounds = yMin + " <= y <= " + yMax;
         String zBounds = zMin + " <= z <=" + zMax;
@@ -89,9 +90,9 @@ public class Model {
         yTemp /= vertices.size();
         zTemp /= vertices.size();
 
-        xStd = Math.sqrt(xTemp);
-        yStd = Math.sqrt(yTemp);
-        zStd = Math.sqrt(zTemp);
+        xStd = (double)Math.round(Math.sqrt(xTemp)*1000000d)/1000000d;
+        yStd = (double)Math.round(Math.sqrt(yTemp)*1000000d)/1000000d;
+        zStd = (double)Math.round(Math.sqrt(zTemp)*1000000d)/1000000d;
 
         standardDeviations = "x = " + xStd + ", y = " + yStd + ", z = " + zStd;
     }
@@ -108,8 +109,18 @@ public class Model {
     }
 
     public void whitenModel(){
-        for(int i = 0; i < vertices.size(); i++) {
+        double xPercent = (xStd - 1) / xStd;
+        double yPercent = (yStd - 1) / yStd;
+        double zPercent = (zStd - 1) / zStd;
 
+        for(int i = 0; i < vertices.size(); i++) {
+            Point3D current = vertices.get(i);
+            double tempX = (double)Math.round((current.getX() - (current.getX() * xPercent))*1000000d)/1000000d;
+            double tempY = (double)Math.round((current.getY() - (current.getY() * yPercent))*1000000d)/1000000d;
+            double tempZ = (double)Math.round((current.getZ() - (current.getZ() * zPercent))*1000000d)/1000000d;
+            whitenedVertices.add(new Point3D(tempX, tempY, tempZ));
         }
+        vertices = whitenedVertices;
+
     }
 }

@@ -25,6 +25,7 @@ public class Main {
         model.whitenModel();
         model.setMeta();
         model.setStandardDeviations();
+        fileManager.writePoints(model, "cow_rounded.ply");
         printManager(model, "=== After whitening ");
 
         boolean debug = true;
