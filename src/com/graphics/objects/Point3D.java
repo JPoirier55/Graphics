@@ -2,7 +2,11 @@ package com.graphics.objects;
 
 /**
  * Created by Jake on 8/30/2016.
+ *
+ * Base class of a single vertex within the model
+ *
  */
+
 public class Point3D {
     private double x;
     private double y;
