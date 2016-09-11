@@ -2,7 +2,7 @@ package com.graphics.main;
 
 import com.graphics.objects.*;
 
-public class Main {
+public class Geonorm {
 
     public static void main(String[] args) {
         Model model = new Model();
