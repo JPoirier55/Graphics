@@ -115,6 +115,7 @@ public class FileManager {
         catch (FileNotFoundException e) {
             System.err.println("ERROR: File is not of proper format: \nStack Trace:");
             e.printStackTrace();
+            System.exit(-1);
         }
     }
 }
