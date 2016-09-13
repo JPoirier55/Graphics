@@ -40,7 +40,9 @@ public class FileManager {
             }
             writer.close();
         } catch ( IOException e ) {
+            System.err.println("ERROR: Cannot write to file: \nStack Trace: ");
             e.printStackTrace();
+            System.exit(-1);
         }
     }
 
@@ -68,30 +70,50 @@ public class FileManager {
                     }
                     if (model.vertexNum > 1 || model.faceNum > 1) {
                         for (int i = 0; i < model.vertexNum; i++) {
-                            Double x = scan.nextDouble();
-                            Double y = scan.nextDouble();
-                            Double z = scan.nextDouble();
-                            Point3D tempPoint = new Point3D(x, y, z);
-                            model.vertices.add(tempPoint);
+                            try {
+                                Double x = scan.nextDouble();
+                                Double y = scan.nextDouble();
+                                Double z = scan.nextDouble();
+                                Point3D tempPoint = new Point3D(x, y, z);
+                                model.vertices.add(tempPoint);
+                            }catch (Exception e){
+                                System.err.println("ERROR: Cannot parse vertices: \nStack Trace: ");
+                                e.printStackTrace();
+                                System.exit(-1);
+                            }
                             scan.nextLine();
                         }
-
+                    try {
                         for (int i = 0; i < model.faceNum; i++) {
                             Scanner str = new Scanner(scan.nextLine());
                             Face face = new Face();
-                            while (str.hasNextInt()) {
-                                face.addPoint(str.nextInt());
+                            int facesNum = str.nextInt();
+                            try {
+                                face.addPoint(facesNum);
+                                for (int j = 0; j < facesNum; j++) {
+                                    face.addPoint(str.nextInt());
+                                }
+                                model.faces.add(face);
+                            }catch (Exception e){
+                                System.err.println("ERROR: Cannot parse faces: \nStack Trace: " );
+                                e.printStackTrace();
+                                System.exit(-1);
                             }
-                            model.faces.add(face);
                         }
                         if (scan.hasNextLine()) {
                             scan.nextLine();
                         }
+                    }catch (Exception e){
+                        System.err.println("ERROR: Cannot parse faces: \nStack Trace: " );
+                        e.printStackTrace();
+                        System.exit(-1);
+                    }
                     }
                 }
             scan.close();
         }
         catch (FileNotFoundException e) {
+            System.err.println("ERROR: File is not of proper format: \nStack Trace:");
             e.printStackTrace();
         }
     }
