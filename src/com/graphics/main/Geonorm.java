@@ -32,7 +32,7 @@ public class Geonorm {
         fileManager.writePoints(model, fileName + "_rounded.ply");
         printManager(model, "=== After whitening ");
 
-        boolean debug = true;
+        boolean debug = false;
 
         if (debug){
             System.out.println("Args: " + args[0] );
