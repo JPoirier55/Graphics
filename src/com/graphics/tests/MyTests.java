@@ -14,25 +14,25 @@ public class MyTests {
     private Model testModel = new Model();
     FileManager tester;
 
-    @Test
-    public void testFileManagerBlankValues() {
-        tester = new FileManager("assets/test_no_values.ply");
-        tester.loadPoints(testModel);
-        ArrayList<Point3D> testList = new ArrayList<>();
-        ArrayList<Face> testFaces = new ArrayList<>();
-        assertEquals("No points must return blank arraylist", testList, testModel.vertices);
-        assertEquals("No elements in file must return blank faces list", testFaces, testModel.faces);
-
-    }
-
-    @Test
-    public void testFileManagerBlankFile(){
-        tester = new FileManager("assets/test_blank.ply");
-        this.testModel.vertices = new ArrayList<>();
-        tester.loadPoints(testModel);
-        ArrayList<Point3D> testList = new ArrayList<>();
-        ArrayList<Face> testFaces = new ArrayList<>();
-        assertEquals("No elements in file must return blank arraylist", testList, testModel.vertices);
-        assertEquals("No elements in file must return blank faces list", testFaces, testModel.faces);
-    }
+//    @Test
+//    public void testFileManagerBlankValues() {
+//        tester = new FileManager("assets/test_no_values.ply");
+//        tester.loadPoints(testModel);
+//        ArrayList<Point3D> testList = new ArrayList<>();
+//        ArrayList<Face> testFaces = new ArrayList<>();
+//        assertEquals("No points must return blank arraylist", testList, testModel.vertices);
+//        assertEquals("No elements in file must return blank faces list", testFaces, testModel.faces);
+//
+//    }
+//
+//    @Test
+//    public void testFileManagerBlankFile(){
+//        tester = new FileManager("assets/test_blank.ply");
+//        this.testModel.vertices = new ArrayList<>();
+//        tester.loadPoints(testModel);
+//        ArrayList<Point3D> testList = new ArrayList<>();
+//        ArrayList<Face> testFaces = new ArrayList<>();
+//        assertEquals("No elements in file must return blank arraylist", testList, testModel.vertices);
+//        assertEquals("No elements in file must return blank faces list", testFaces, testModel.faces);
+//    }
 }

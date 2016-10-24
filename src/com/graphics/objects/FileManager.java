@@ -15,11 +15,13 @@ import java.util.regex.Pattern;
 public class FileManager {
 
     private String filename;
+    private String camera_filename;
 
     private boolean readingStrings = true;
 
-    public FileManager(String filename){
+    public FileManager(String filename, String camera_filename){
         this.filename = filename;
+        this.camera_filename = camera_filename;
     }
 
     public void writePoints(Model model, String newFilename){
@@ -110,6 +112,56 @@ public class FileManager {
                     }
                     }
                 }
+            scan.close();
+        }
+        catch (FileNotFoundException e) {
+            System.err.println("ERROR: File is not of proper format: \nStack Trace:");
+            e.printStackTrace();
+            System.exit(-1);
+        }
+    }
+    public void loadCamera(Camera camera){
+        File inFile = new File(this.camera_filename);
+
+        try {
+            Scanner scan = new Scanner(inFile);
+            while(scan.hasNext()) {
+                String str = scan.nextLine();
+
+                if (str.contains("eye")) {
+                    camera.ev_vect[0][0] = Double.parseDouble(str.split(" ")[1]);
+                    camera.ev_vect[1][0] = Double.parseDouble(str.split(" ")[2]);
+                    camera.ev_vect[2][0] = Double.parseDouble(str.split(" ")[3]);
+                }
+                else if (str.contains("look")) {
+                    camera.lv_vect[0][0] = Double.parseDouble(str.split(" ")[1]);
+                    camera.lv_vect[1][0] = Double.parseDouble(str.split(" ")[2]);
+                    camera.lv_vect[2][0] = Double.parseDouble(str.split(" ")[3]);
+                }
+                else if (str.contains("up")) {
+                    camera.up_vect[0][0] = Double.parseDouble(str.split(" ")[1]);
+                    camera.up_vect[1][0] = Double.parseDouble(str.split(" ")[2]);
+                    camera.up_vect[2][0] = Double.parseDouble(str.split(" ")[3]);
+                }
+                else if (str.contains("bounds")) {
+                    camera.left = Double.parseDouble(str.split(" ")[1]);
+                    camera.bottom = Double.parseDouble(str.split(" ")[2]);
+                    camera.right = Double.parseDouble(str.split(" ")[3]);
+                    camera.top = Double.parseDouble(str.split(" ")[4]);
+                    camera.width = camera.right - camera.left;
+                    camera.height = camera.top - camera.bottom;
+                }
+                else if (str.contains("d")) {
+                    camera.d = Double.parseDouble(str.split(" ")[1]);
+                    camera.dv_vect[0][0] = camera.d;
+                    camera.dv_vect[1][0] = camera.d;
+                    camera.dv_vect[2][0] = camera.d;
+                }
+                else if (str.contains("res")){
+                    camera.resX = Integer.parseInt(str.split(" ")[1]);
+                    camera.resY = Integer.parseInt(str.split(" ")[2]);
+                }
+            }
             scan.close();
         }
         catch (FileNotFoundException e) {
