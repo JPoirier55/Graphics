@@ -17,7 +17,6 @@ import static org.ejml.ops.NormOps.normF;
  */
 public class RayTracer {
     public static void main(String[] args) {
-        System.out.println("helloworld");
 
 
         FileManager fileManager = new FileManager(args[0], args[1]);
@@ -27,15 +26,18 @@ public class RayTracer {
 
         fileManager.loadPoints(model);
         fileManager.loadCamera(camera);
-        RayHandler rayHandler = new RayHandler(model);
+//        fileManager.writePoints(model, "C:\\Users\\Jake\\git3\\Graphics\\assets\\tester.ply");
+        RayHandler rayHandler = new RayHandler(model, camera);
+        System.out.println(camera.toString());
         PixelHandler p = new PixelHandler(rayHandler, camera);
         p.pixels();
-        System.out.println(camera.toString());
+        p.getMaxes();
+        p.pixelsetter();
 
 
-        rayHandler.getMaxes();
-        System.out.println(rayHandler.maxT + "   " + rayHandler.minT);
-        rayHandler.printRGB();
+        System.out.println(p.maxT + "   " + p.minT);
+//        p.printRGB();
+        fileManager.writePPM(p, args[2], camera);
     }
 
     private static int usage(){

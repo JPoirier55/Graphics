@@ -24,6 +24,27 @@ public class FileManager {
         this.camera_filename = camera_filename;
     }
 
+    public void writePPM(PixelHandler p, String newFilename, Camera camera){
+        File outputFile = new File(newFilename);
+        BufferedWriter writer;
+        try {
+            writer = new BufferedWriter(new FileWriter(outputFile));
+            writer.write("P3\n");
+            writer.write(camera.resX + " " + camera.resY + " 255\n");
+            for(int j = camera.resY-1; j >=0; j--){
+                for (int i = 0; i<camera.resX; i++){
+                    writer.write(" "+ p.pixel_arr[i][j]);
+                }
+                writer.write("\n");
+            }
+            writer.close();
+        } catch ( IOException e ) {
+            System.err.println("ERROR: Cannot write to file: \nStack Trace: ");
+            e.printStackTrace();
+            System.exit(-1);
+        }
+    }
+
     public void writePoints(Model model, String newFilename){
         File outputFile = new File(newFilename);
         BufferedWriter writer;
@@ -148,18 +169,19 @@ public class FileManager {
                     camera.bottom = Double.parseDouble(str.split(" ")[2]);
                     camera.right = Double.parseDouble(str.split(" ")[3]);
                     camera.top = Double.parseDouble(str.split(" ")[4]);
-                    camera.width = camera.right - camera.left;
-                    camera.height = camera.top - camera.bottom;
                 }
                 else if (str.contains("d")) {
                     camera.d = Double.parseDouble(str.split(" ")[1]);
                     camera.dv_vect[0][0] = camera.d;
                     camera.dv_vect[1][0] = camera.d;
                     camera.dv_vect[2][0] = camera.d;
+                    camera.near = camera.d;
                 }
                 else if (str.contains("res")){
                     camera.resX = Integer.parseInt(str.split(" ")[1]);
                     camera.resY = Integer.parseInt(str.split(" ")[2]);
+                    camera.width = camera.resX;
+                    camera.height = camera.resY;
                 }
             }
             scan.close();

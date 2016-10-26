@@ -13,17 +13,16 @@ import static org.ejml.ops.NormOps.normF;
  * Created by Jake on 10/19/2016.
  */
 public class RayHandler {
-    public double maxT, minT;
-    private ArrayList<String> rgb;
+
     public ArrayList stvals;
     private Model model;
+    public Camera camera;
 
-    public RayHandler(Model model){
-        this.rgb = new ArrayList<String>();
+    public RayHandler(Model model, Camera camera){
+
         this.stvals = new ArrayList();
-        this.maxT = 0;
-        this.minT = 100000000;
         this.model = model;
+        this.camera = camera;
 
     }
 
@@ -33,14 +32,12 @@ public class RayHandler {
         DenseMatrix64F temp2 = new DenseMatrix64F(3, 1);
         DenseMatrix64F YV = new DenseMatrix64F(3, 1);
 
-//        System.out.println("Lv: " + Lv);
-//        System.out.println("Dv: " + Dv);
         double norm_dv = normF(Dv);
         if(norm_dv != 0){
             divide(Dv, norm_dv);
         }
 
-//        System.out.println("Normalized Dv: " + Dv);
+        ArrayList temp_stvals = new ArrayList();
 
         for(int i = 0; i < model.faceNum; i++) {
 
@@ -48,18 +45,16 @@ public class RayHandler {
             int index_b = (int) model.faces.get(i).pointList.get(2);
             int index_c = (int) model.faces.get(i).pointList.get(3);
 
-
             double[][] av_vect = {{model.vertices.get(index_a).getX()}, {model.vertices.get(index_a).getY()}, {model.vertices.get(index_a).getZ()}};
             double[][] bv_vect = {{model.vertices.get(index_b).getX()}, {model.vertices.get(index_b).getY()}, {model.vertices.get(index_b).getZ()}};
             double[][] cv_vect = {{model.vertices.get(index_c).getX()}, {model.vertices.get(index_c).getY()}, {model.vertices.get(index_c).getZ()}};
             DenseMatrix64F Av = new DenseMatrix64F(av_vect);
             DenseMatrix64F Bv = new DenseMatrix64F(bv_vect);
             DenseMatrix64F Cv = new DenseMatrix64F(cv_vect);
-//            System.out.println(Av + "   " + Bv + "   " + Cv);
+
             subtract(Av, Lv, YV);
             subtract(Av, Bv, temp1);
             subtract(Av, Cv, temp2);
-
 
             DenseMatrix64F MM = new DenseMatrix64F(3,3);
             for(int j = 0; j < 3;j++){
@@ -92,68 +87,17 @@ public class RayHandler {
                 sgamma = detM2 / detM;
 
                 if(stval >0 && sbeta>=0 && sgamma >=0 && (sbeta+sgamma)<=1){
-                    return stval;
+                    temp_stvals.add(stval);
                 }
             }
         }
-        return -1;
-    }
-    private void setGrayPixel(){
-        int red = 239;
-        int blue = 239;
-        int green = 239;
-        String temp = red + " " + green + " " + blue;
-        rgb.add(temp);
-    }
-    public void getMaxes(){
-        for(int i = 0 ; i< stvals.size(); i++) {
-            double temp = (double)stvals.get(i);
-            if (temp < minT && temp >0) {
-                minT = temp;
-            }
-            if (temp > maxT) {
-                maxT = temp;
+        double min = 10000000;
+        double stval = -1;
+        for(int i = 0; i < temp_stvals.size(); i++){
+            if((double)temp_stvals.get(i) < min){
+                stval = (double)temp_stvals.get(i);
             }
         }
-    }
-    public String getPixelColor(double stval){
-        String temp;
-        if(stval < 0){
-            int red = 239;
-            int blue = 239;
-            int green = 239;
-            temp = red + " " + green + " " + blue;
-        }else{
-            double ratio = 2 * (stval - minT) / (maxT - minT);
-//                System.out.println("RATIO: " + ratio);
-            int red = (int) Math.max(0, 255 * (1 - ratio));
-            int blue = (int) Math.max(0, 255 * (ratio - 1));
-            int green = 255 - red - blue;
-            temp = red + " " + green + " " + blue;
-        }
-        return temp;
-    }
-    public void setPixelColor(double stval){
-        String temp;
-//            System.out.println("STVAL COMING IN: " + (double)stvals.get(i));
-        if(stval < 0){
-            int red = 239;
-            int blue = 239;
-            int green = 239;
-            temp = red + " " + green + " " + blue;
-        }else{
-            double ratio = 2 * (stval - minT) / (maxT - minT);
-//                System.out.println("RATIO: " + ratio);
-            int red = (int) Math.max(0, 255 * (1 - ratio));
-            int blue = (int) Math.max(0, 255 * (ratio - 1));
-            int green = 255 - red - blue;
-            temp = red + " " + green + " " + blue;
-        }
-        rgb.add(temp);
-    }
-    public void printRGB(){
-        for(int i = 0; i < rgb.size(); i++){
-            System.out.println(rgb.get(i));
-        }
+        return stval;
     }
 }
