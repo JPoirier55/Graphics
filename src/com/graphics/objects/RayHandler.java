@@ -22,15 +22,13 @@ public class RayHandler {
     public Camera camera;
 
     public RayHandler(Model model, Camera camera){
-
         this.stvals = new ArrayList();
         this.model = model;
         this.camera = camera;
-
     }
 
     public double shootRay(DenseMatrix64F Lv, DenseMatrix64F Dv) {
-
+        
         DenseMatrix64F temp1 = new DenseMatrix64F(3, 1);
         DenseMatrix64F temp2 = new DenseMatrix64F(3, 1);
         DenseMatrix64F YV = new DenseMatrix64F(3, 1);
@@ -48,6 +46,7 @@ public class RayHandler {
             int index_b = (int) model.faces.get(i).pointList.get(2);
             int index_c = (int) model.faces.get(i).pointList.get(3);
 
+            // Get 3 points of triangle
             double[][] av_vect = {{model.vertices.get(index_a).getX()}, {model.vertices.get(index_a).getY()}, {model.vertices.get(index_a).getZ()}};
             double[][] bv_vect = {{model.vertices.get(index_b).getX()}, {model.vertices.get(index_b).getY()}, {model.vertices.get(index_b).getZ()}};
             double[][] cv_vect = {{model.vertices.get(index_c).getX()}, {model.vertices.get(index_c).getY()}, {model.vertices.get(index_c).getZ()}};
@@ -55,6 +54,7 @@ public class RayHandler {
             DenseMatrix64F Bv = new DenseMatrix64F(bv_vect);
             DenseMatrix64F Cv = new DenseMatrix64F(cv_vect);
 
+            // Get camera coordinates for look at point to triangle
             subtract(Av, Lv, YV);
             subtract(Av, Bv, temp1);
             subtract(Av, Cv, temp2);
@@ -91,24 +91,13 @@ public class RayHandler {
             }
         }
         double minval = 0;
-        if(temp_stvals.size() > 1){
+        // Find the minimum value of all t vals
+        if(temp_stvals.size() >= 1){
             minval = (double)Collections.min(temp_stvals);
         }
         if(minval == 0.0){
             minval = -1;
         }
-
         return minval;
-
-    }
-    private double findMinTval(ArrayList stval_arr){
-        double min = 10000000;
-        double stval = -1;
-        for(int i = 0; i < stval_arr.size(); i++){
-            if((double)stval_arr.get(i) < min && (double)stval_arr.get(i)>0){
-                stval = (double)stval_arr.get(i);
-            }
-        }
-        return stval;
     }
 }

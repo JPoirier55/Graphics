@@ -46,9 +46,9 @@ public class PixelHandler {
 //        System.out.println("UV:" + ray.UV);
 //        System.out.println(ray.VV);
 
-        stArr = new double[camera.resY][camera.resX];
-        for(int i = 0; i < camera.resY ; i++){
-            for(int j = 0; j < camera.resX; j++){
+        stArr = new double[camera.resX][camera.resY];
+        for(int i = 0; i < camera.resX ; i++){
+            for(int j = 0; j < camera.resY; j++){
                 DenseMatrix64F[] matrix_arr = pixel(i,j);
                 double stval = rayHandler.shootRay(matrix_arr[0], matrix_arr[1]);
                 stArr[i][j] = stval;
@@ -58,36 +58,13 @@ public class PixelHandler {
     }
 
     public void printRGB(){
-        for(int i = pixel_arr.length-1; i >=0 ; i--){
-            for(int j = 0; j < pixel_arr[i].length; j++){
+        for(int i = 0; i < camera.resX ; i++){
+            for(int j = 0; j < camera.resY; j++){
                 System.out.print(pixel_arr[i][j] + " ");
             }
             System.out.println();
         }
     }
-
-//    private DenseMatrix64F pixel(int i, int j){
-//        double px = (double)i/(camera.width-1)*(camera.right-camera.left)+camera.left;
-//        double py = (double)j/(camera.height-1)*(camera.top-camera.bottom)+camera.bottom;
-////        System.out.println(px + ", "+ py);
-//        DenseMatrix64F temp = new DenseMatrix64F(3,1);
-//        DenseMatrix64F temp2 = new DenseMatrix64F(3,1);
-//        DenseMatrix64F temp3 = new DenseMatrix64F(3,1);
-//        DenseMatrix64F temp4 = new DenseMatrix64F(3,1);
-//        DenseMatrix64F temp5 = new DenseMatrix64F(3,1);
-//        DenseMatrix64F pixpt = new DenseMatrix64F(3,1);
-//        DenseMatrix64F ray_matrix = new DenseMatrix64F(3,1);
-//        scale(camera.near, ray.WV, temp); // WV * near
-//        scale(px, ray.UV, temp2); // UV * px
-//        scale(py, ray.VV, temp3); // VV * py
-//        add(ray.EV, temp, temp4); // (WV* near) + EV
-//        add(temp4, temp2, temp5); // ((WV* near) + EV) + (UV * px)
-//        add(temp5, temp3, pixpt);// ((WV* near) + EV) + (UV * px) + (VV * py)
-////        System.out.println(pixpt.get(0) + ", " + pixpt.get(1) + ", " + pixpt.get(2));
-//
-//        subtract(pixpt, ray.EV, ray_matrix);
-//        return pixpt;
-//    }
 
     private DenseMatrix64F[] pixel(int i, int j){
         double px = (double)i/(camera.width-1)*(camera.right-camera.left)+camera.left;
@@ -127,9 +104,9 @@ public class PixelHandler {
     }
 
     public void pixelsetter() {
-        pixel_arr = new String[camera.resY][camera.resX];
-        for (int i = 0; i < camera.resY; i++) {
-            for (int j = 0; j < camera.resX; j++) {
+        pixel_arr = new String[camera.resX][camera.resY];
+        for (int i = 0; i < camera.resX; i++) {
+            for (int j = 0; j < camera.resY; j++) {
 //                System.out.println(stArr[i][j]);
                 pixel_arr[i][j] = setPixelColor(stArr[i][j]);
             }

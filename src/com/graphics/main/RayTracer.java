@@ -36,7 +36,7 @@ public class RayTracer {
 
 
         System.out.println(p.maxT + "   " + p.minT);
-        p.printRGB();
+//        p.printRGB();
         fileManager.writePPM(p, args[2], camera);
     }
 
