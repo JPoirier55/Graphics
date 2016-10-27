@@ -31,7 +31,7 @@ public class FileManager {
             writer = new BufferedWriter(new FileWriter(outputFile));
             writer.write("P3\n");
             writer.write(camera.resX + " " + camera.resY + " 255\n");
-            for(int j = camera.resY-1; j >=0; j--){
+            for(int j = 0; j < camera.resY; j++){
                 for (int i = 0; i<camera.resX; i++){
                     writer.write(" "+ p.pixel_arr[i][j]);
                 }
@@ -175,7 +175,7 @@ public class FileManager {
                     camera.dv_vect[0][0] = camera.d;
                     camera.dv_vect[1][0] = camera.d;
                     camera.dv_vect[2][0] = camera.d;
-                    camera.near = camera.d;
+                    camera.near = -camera.d;
                 }
                 else if (str.contains("res")){
                     camera.resX = Integer.parseInt(str.split(" ")[1]);

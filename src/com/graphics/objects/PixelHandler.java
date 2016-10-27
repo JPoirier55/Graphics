@@ -100,7 +100,7 @@ public class PixelHandler {
         DenseMatrix64F temp5 = new DenseMatrix64F(3,1);
         DenseMatrix64F pixpt = new DenseMatrix64F(3,1);
         DenseMatrix64F ray_matrix = new DenseMatrix64F(3,1);
-        scale(-camera.near, ray.WV, temp); // WV * near
+        scale(camera.near, ray.WV, temp); // WV * near
         scale(px, ray.UV, temp2); // UV * px
         scale(py, ray.VV, temp3); // VV * py
         add(ray.EV, temp, temp4); // (WV* near) + EV
@@ -135,23 +135,7 @@ public class PixelHandler {
             }
         }
     }
-//        pixel_arr = new String[camera.resY][camera.resX];
-//        for (int i = 0; i < camera.resY; i++) {
-//            for (int j = 0; j < camera.resX; j++) {
-//                System.out.println(i + " , "+j);
-//                pixel_arr[i][j] = setPixelColor((double)stvals.get(i*camera.resX+j));
-//                System.out.println(pixel_arr[i][j]);
-//            }
-//        }
-//        for (int i = 0; i < camera.resY; i++) {
-//            for (int j = 0; j < camera.resX; j++) {
-//                System.out.println(i + " , "+j);
-//                pixel_arr[i][j] = setPixelColor(stvals.get(i*camera.resX+j));
-//                System.out.println(pixel_arr[i][j]);
-//            }
-//        }
 
-//        }
 
     public String setPixelColor(double stval){
         String temp ="";

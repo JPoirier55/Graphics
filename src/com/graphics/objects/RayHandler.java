@@ -1,8 +1,11 @@
 package com.graphics.objects;
 
+import com.sun.deploy.util.ArrayUtil;
 import org.ejml.data.DenseMatrix64F;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 import static org.ejml.ops.CommonOps.det;
 import static org.ejml.ops.CommonOps.divide;
@@ -72,30 +75,38 @@ public class RayHandler {
                 MMs3.set(j, 2, YV.get(j,0));
             }
             double detM = det(MM);
-            if(detM == 0){
-                return -1;
-            }else{
-                double detM1 = det(MMs1);
-                double detM2 = det(MMs2);
-                double detM3 = det(MMs3);
-                double stval = 0;
-                double sbeta = 0;
-                double sgamma = 0;
+            double detM1 = det(MMs1);
+            double detM2 = det(MMs2);
+            double detM3 = det(MMs3);
+            double stval = 0;
+            double sbeta = 0;
+            double sgamma = 0;
 
-                stval = detM3 / detM;
-                sbeta = detM1 / detM;
-                sgamma = detM2 / detM;
+            stval = detM3 / detM;
+            sbeta = detM1 / detM;
+            sgamma = detM2 / detM;
 
-                if(stval >0 && sbeta>=0 && sgamma >=0 && (sbeta+sgamma)<=1){
-                    temp_stvals.add(stval);
-                }
+            if(stval >0 && sbeta>=0 && sgamma >=0 && (sbeta+sgamma)<=1){
+                temp_stvals.add(stval);
             }
         }
+        double minval = 0;
+        if(temp_stvals.size() > 1){
+            minval = (double)Collections.min(temp_stvals);
+        }
+        if(minval == 0.0){
+            minval = -1;
+        }
+
+        return minval;
+
+    }
+    private double findMinTval(ArrayList stval_arr){
         double min = 10000000;
         double stval = -1;
-        for(int i = 0; i < temp_stvals.size(); i++){
-            if((double)temp_stvals.get(i) < min){
-                stval = (double)temp_stvals.get(i);
+        for(int i = 0; i < stval_arr.size(); i++){
+            if((double)stval_arr.get(i) < min && (double)stval_arr.get(i)>0){
+                stval = (double)stval_arr.get(i);
             }
         }
         return stval;
