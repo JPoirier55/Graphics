@@ -1,16 +1,5 @@
 package com.graphics.main;
 import com.graphics.objects.*;
-import org.ejml.data.DenseMatrix64F;
-import org.ejml.ops.CommonOps;
-import org.ejml.ops.CommonOps;
-import org.ejml.equation.*;
-import org.ejml.ops.NormOps;
-
-import javax.swing.plaf.synth.SynthTextAreaUI;
-import java.util.Arrays;
-
-import static org.ejml.ops.CommonOps.*;
-import static org.ejml.ops.NormOps.normF;
 
 /**
  * Created by Jake on 10/18/2016.

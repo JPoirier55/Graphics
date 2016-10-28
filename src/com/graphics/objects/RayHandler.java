@@ -1,10 +1,7 @@
 package com.graphics.objects;
-
-import com.sun.deploy.util.ArrayUtil;
 import org.ejml.data.DenseMatrix64F;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 import static org.ejml.ops.CommonOps.det;
