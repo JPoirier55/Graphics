@@ -10,13 +10,13 @@ import static org.ejml.ops.NormOps.normF;
  * Created by Jake on 10/19/2016.
  */
 public class PixelHandler {
-    Camera camera;
+    private Camera camera;
     public double maxT, minT;
-    Ray ray = new Ray();
-    RayHandler rayHandler;
+    private Ray ray = new Ray();
+    private RayHandler rayHandler;
     public String[][] pixel_arr;
-    ArrayList stvals;
-    double[][] stArr;
+    private ArrayList stvals;
+    private double[][] stArr;
 
     public PixelHandler(RayHandler rayHandler, Camera camera){
         this.rayHandler = rayHandler;
@@ -32,19 +32,13 @@ public class PixelHandler {
         ray.EV = new DenseMatrix64F(camera.ev_vect);
         ray.WV = new DenseMatrix64F(3,1);
         stvals = new ArrayList();
-//        System.out.println(ray.LV);
 
         subtract(ray.LV, ray.EV, ray.WV);
         divide(ray.WV,normF(ray.WV));
-        System.out.println(ray.WV);
         ray.UV = new DenseMatrix64F(cross(new DenseMatrix64F(ray.UP), new DenseMatrix64F(ray.WV)));
-//        System.out.println("UV: " + ray.UV);
         divide(ray.UV,normF(ray.UV));
         ray.VV = new DenseMatrix64F(cross(new DenseMatrix64F(ray.WV), new DenseMatrix64F(ray.UV)));
 
-//        System.out.println(ray.WV);
-//        System.out.println("UV:" + ray.UV);
-//        System.out.println(ray.VV);
 
         stArr = new double[camera.resX][camera.resY];
         for(int i = 0; i < camera.resX ; i++){
@@ -69,7 +63,6 @@ public class PixelHandler {
     private DenseMatrix64F[] pixel(int i, int j){
         double px = (double)i/(camera.width-1)*(camera.right-camera.left)+camera.left;
         double py = (double)j/(camera.height-1)*(camera.top-camera.bottom)+camera.bottom;
-//        System.out.println(px + ", "+ py);
         DenseMatrix64F temp = new DenseMatrix64F(3,1);
         DenseMatrix64F temp2 = new DenseMatrix64F(3,1);
         DenseMatrix64F temp3 = new DenseMatrix64F(3,1);
@@ -84,9 +77,7 @@ public class PixelHandler {
         add(temp4, temp2, temp5); // ((WV* near) + EV) + (UV * px)
         add(temp5, temp3, pixpt);// ((WV* near) + EV) + (UV * px) + (VV * py)
         subtract(ray.EV, pixpt, ray_matrix);
-//        System.out.println(pixpt.get(0) + ", " + pixpt.get(1) + ", " + pixpt.get(2));
 
-//        subtract(pixpt, ray.EV, ray_matrix);
         DenseMatrix64F[] pts_rays = new DenseMatrix64F[]{pixpt, ray_matrix};
         return pts_rays;
     }
@@ -107,16 +98,13 @@ public class PixelHandler {
         pixel_arr = new String[camera.resX][camera.resY];
         for (int i = 0; i < camera.resX; i++) {
             for (int j = 0; j < camera.resY; j++) {
-//                System.out.println(stArr[i][j]);
                 pixel_arr[i][j] = setPixelColor(stArr[i][j]);
             }
         }
     }
 
-
     public String setPixelColor(double stval){
-        String temp ="";
-//        System.out.println(stval);
+        String temp;
         if(stval < 0){
             int red = 239;
             int blue = 239;
@@ -140,34 +128,5 @@ public class PixelHandler {
         v3.set(1,0, v1.get(2,0)*v2.get(0,0)-v1.get(0,0)*v2.get(2,0));
         v3.set(2,0, v1.get(0,0)*v2.get(1,0)-v1.get(1,0)*v2.get(0,0));
         return v3;
-    }
-
-    public double[][] cross_arr(double[][] vector1, double[][] vector2){
-        double [][] vector3 = new double[3][1];
-        vector3[0][0] = vector1[1][0] * vector2[2][0] - vector1[2][0] * vector2[1][0];
-        vector3[1][0] = vector1[2][0] * vector2[0][0] - vector1[0][0] * vector2[2][0];
-        vector3[2][0] = vector1[0][0] * vector2[1][0] - vector1[1][0] * vector2[0][0];
-
-        return vector3;
-    }
-
-    private double[][] toArray(DenseMatrix64F matrix)
-    {
-        // Credit to Marco13 on SO at:
-        // http://stackoverflow.com/questions/22453229/matrix-multiplication-using-ejml
-        double array[][] = new double[matrix.getNumRows()][matrix.getNumCols()];
-        for (int r=0; r<matrix.getNumRows(); r++)
-        {
-            for (int c=0; c<matrix.getNumCols(); c++)
-            {
-                array[r][c] = matrix.get(r,c);
-            }
-        }
-        return array;
-    }
-    private void printArr(double[][] vector){
-        for(int i =0; i<3; i++){
-            System.out.println(vector[i][0]);
-        }
     }
 }

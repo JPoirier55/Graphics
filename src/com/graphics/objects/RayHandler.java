@@ -28,7 +28,7 @@ public class RayHandler {
     }
 
     public double shootRay(DenseMatrix64F Lv, DenseMatrix64F Dv) {
-        
+
         DenseMatrix64F temp1 = new DenseMatrix64F(3, 1);
         DenseMatrix64F temp2 = new DenseMatrix64F(3, 1);
         DenseMatrix64F YV = new DenseMatrix64F(3, 1);

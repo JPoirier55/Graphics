@@ -18,7 +18,9 @@ import static org.ejml.ops.NormOps.normF;
 public class RayTracer {
     public static void main(String[] args) {
 
-
+        if(args.length < 3){
+            System.exit(usage());
+        }
         FileManager fileManager = new FileManager(args[0], args[1]);
         String fileName = cleanFileName(args[0]);
         Model model = new Model();
@@ -26,18 +28,15 @@ public class RayTracer {
 
         fileManager.loadPoints(model);
         fileManager.loadCamera(camera);
-//        fileManager.writePoints(model, "C:\\Users\\Jake\\git3\\Graphics\\assets\\tester.ply");
         RayHandler rayHandler = new RayHandler(model, camera);
-        System.out.println(camera.toString());
         PixelHandler p = new PixelHandler(rayHandler, camera);
+        System.out.println("Starting depth trace....");
         p.pixels();
         p.getMaxes();
         p.pixelsetter();
-
-
-        System.out.println(p.maxT + "   " + p.minT);
-//        p.printRGB();
         fileManager.writePPM(p, args[2], camera);
+        System.out.println("Finished depth trace.");
+        System.out.println("Output file: "+args[2]);
     }
 
     private static int usage(){

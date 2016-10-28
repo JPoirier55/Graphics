@@ -33,7 +33,7 @@ public class FileManager {
             writer.write(camera.resX + " " + camera.resY + " 255\n");
             for(int j = 0; j < camera.resY; j++){
                 for (int i = 0; i<camera.resX; i++){
-                    writer.write(" "+ p.pixel_arr[i][j]);
+                    writer.write(p.pixel_arr[i][j]+" ");
                 }
                 writer.write("\n");
             }
