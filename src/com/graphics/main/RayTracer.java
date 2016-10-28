@@ -29,7 +29,7 @@ public class RayTracer {
     }
 
     private static int usage(){
-        System.err.println("USAGE: java Geonorm <filename>");
+        System.err.println("USAGE: java RayTracer <input PLY file> <input Camera File> <output file name");
         return -1;
     }
 
