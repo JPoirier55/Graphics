@@ -1,6 +1,7 @@
 package com.graphics.objects;
 import org.ejml.data.DenseMatrix64F;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -25,15 +26,11 @@ public class RayHandler {
     }
 
     public double shootRay(DenseMatrix64F Lv, DenseMatrix64F Dv) {
-
         DenseMatrix64F temp1 = new DenseMatrix64F(3, 1);
         DenseMatrix64F temp2 = new DenseMatrix64F(3, 1);
         DenseMatrix64F YV = new DenseMatrix64F(3, 1);
 
-        double norm_dv = normF(Dv);
-        if(norm_dv != 0){
-            divide(Dv, norm_dv);
-        }
+        divide(Dv, normF(Dv));
 
         ArrayList temp_stvals = new ArrayList();
 
@@ -83,18 +80,23 @@ public class RayHandler {
             sbeta = detM1 / detM;
             sgamma = detM2 / detM;
 
+
             if(stval >0 && sbeta>=0 && sgamma >=0 && (sbeta+sgamma)<=1){
-                temp_stvals.add(stval);
+                temp_stvals.add(new BigDecimal(String.valueOf(stval)).setScale(5, BigDecimal.ROUND_HALF_UP).doubleValue());
             }
         }
         double minval = 0;
         // Find the minimum value of all t vals
         if(temp_stvals.size() >= 1){
             minval = (double)Collections.min(temp_stvals);
+        }else{
+            minval = 0;
         }
+
         if(minval == 0.0){
             minval = -1;
         }
+
         return minval;
     }
 }

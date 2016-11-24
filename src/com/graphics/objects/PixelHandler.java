@@ -33,12 +33,11 @@ public class PixelHandler {
         ray.WV = new DenseMatrix64F(3,1);
         stvals = new ArrayList();
 
-        subtract(ray.LV, ray.EV, ray.WV);
+        subtract(ray.EV, ray.LV, ray.WV);
         divide(ray.WV,normF(ray.WV));
         ray.UV = new DenseMatrix64F(cross(new DenseMatrix64F(ray.UP), new DenseMatrix64F(ray.WV)));
         divide(ray.UV,normF(ray.UV));
         ray.VV = new DenseMatrix64F(cross(new DenseMatrix64F(ray.WV), new DenseMatrix64F(ray.UV)));
-
 
         stArr = new double[camera.resX][camera.resY];
         for(int i = 0; i < camera.resX ; i++){
@@ -61,14 +60,16 @@ public class PixelHandler {
     }
 
     private DenseMatrix64F[] pixel(int i, int j){
-        double px = (double)i/(camera.width-1)*(camera.right-camera.left)+camera.left;
-        double py = (double)j/(camera.height-1)*(camera.top-camera.bottom)+camera.bottom;
+        double px = (double)(i/(camera.width-1)*(camera.right-camera.left)+camera.left);
+        double py = (double)(j/(camera.height-1)*(camera.top-camera.bottom)+camera.bottom);
         DenseMatrix64F temp = new DenseMatrix64F(3,1);
         DenseMatrix64F temp2 = new DenseMatrix64F(3,1);
         DenseMatrix64F temp3 = new DenseMatrix64F(3,1);
         DenseMatrix64F temp4 = new DenseMatrix64F(3,1);
         DenseMatrix64F temp5 = new DenseMatrix64F(3,1);
+        DenseMatrix64F temp6 = new DenseMatrix64F(3,1);
         DenseMatrix64F pixpt = new DenseMatrix64F(3,1);
+        DenseMatrix64F raypt = new DenseMatrix64F(3,1);
         DenseMatrix64F ray_matrix = new DenseMatrix64F(3,1);
         scale(camera.near, ray.WV, temp); // WV * near
         scale(px, ray.UV, temp2); // UV * px
@@ -76,9 +77,12 @@ public class PixelHandler {
         add(ray.EV, temp, temp4); // (WV* near) + EV
         add(temp4, temp2, temp5); // ((WV* near) + EV) + (UV * px)
         add(temp5, temp3, pixpt);// ((WV* near) + EV) + (UV * px) + (VV * py)
-        subtract(ray.EV, pixpt, ray_matrix);
+        subtract(pixpt, ray.EV, ray_matrix);
+        divide(ray_matrix, normF(ray_matrix));
+        scale(camera.near, ray_matrix, temp6);
+        add(temp6, pixpt, raypt);
 
-        DenseMatrix64F[] pts_rays = new DenseMatrix64F[]{pixpt, ray_matrix};
+        DenseMatrix64F[] pts_rays = new DenseMatrix64F[]{raypt, ray_matrix};
         return pts_rays;
     }
 
@@ -113,9 +117,9 @@ public class PixelHandler {
 
         }else{
 
-            double ratio = 2 * (stval - minT) / (maxT - minT);
-            int red = (int) Math.max(0, 255 * (1 - ratio));
-            int blue = (int) Math.max(0, 255 * (ratio - 1));
+            double ratio = (2 * (stval - minT)) / (maxT - minT);
+            int red = (int) Math.round(Math.max(0, 255 * (1 - ratio)));
+            int blue = (int) Math.round(Math.max(0, 255 * (ratio - 1)));
             int green = 255 - red - blue;
             temp = red + " " + green + " " + blue;
         }

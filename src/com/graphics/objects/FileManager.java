@@ -19,7 +19,7 @@ public class FileManager {
 
     private boolean readingStrings = true;
 
-    public FileManager(String filename, String camera_filename){
+    public FileManager(String camera_filename, String filename){
         this.filename = filename;
         this.camera_filename = camera_filename;
     }
@@ -31,7 +31,7 @@ public class FileManager {
             writer = new BufferedWriter(new FileWriter(outputFile));
             writer.write("P3\n");
             writer.write(camera.resX + " " + camera.resY + " 255\n");
-            for(int j = 0; j < camera.resY; j++){
+            for(int j = camera.resY-1; j >=0; j--){
                 for (int i = 0; i<camera.resX; i++){
                     writer.write(p.pixel_arr[i][j]+" ");
                 }
@@ -74,38 +74,38 @@ public class FileManager {
 
         try {
             Scanner scan = new Scanner(inFile);
-                if(scan.hasNext()) {
-                    while (this.readingStrings) {
-                        String str = scan.nextLine();
-                        model.metaData.add(str);
-                        String pattern = "([0-9]+)";
-                        Pattern p = Pattern.compile(pattern);
-                        Matcher m = p.matcher(str);
-                        if (str.contains("element vertex") && m.find()) {
-                            model.vertexNum = Integer.parseInt(m.group(0));
-                        }
-                        if (str.contains("element face") && m.find()) {
-                            model.faceNum = Integer.parseInt(m.group(0));
-                        }
-                        if (str.equals("end_header")) {
-                            this.readingStrings = false;
-                        }
+            if(scan.hasNext()) {
+                while (this.readingStrings) {
+                    String str = scan.nextLine();
+                    model.metaData.add(str);
+                    String pattern = "([0-9]+)";
+                    Pattern p = Pattern.compile(pattern);
+                    Matcher m = p.matcher(str);
+                    if (str.contains("element vertex") && m.find()) {
+                        model.vertexNum = Integer.parseInt(m.group(0));
                     }
-                    if (model.vertexNum > 1 || model.faceNum > 1) {
-                        for (int i = 0; i < model.vertexNum; i++) {
-                            try {
-                                Double x = scan.nextDouble();
-                                Double y = scan.nextDouble();
-                                Double z = scan.nextDouble();
-                                Point3D tempPoint = new Point3D(x, y, z);
-                                model.vertices.add(tempPoint);
-                            }catch (Exception e){
-                                System.err.println("ERROR: Cannot parse vertices: \nStack Trace: ");
-                                e.printStackTrace();
-                                System.exit(-1);
-                            }
-                            scan.nextLine();
+                    if (str.contains("element face") && m.find()) {
+                        model.faceNum = Integer.parseInt(m.group(0));
+                    }
+                    if (str.equals("end_header")) {
+                        this.readingStrings = false;
+                    }
+                }
+                if (model.vertexNum > 1 || model.faceNum > 1) {
+                    for (int i = 0; i < model.vertexNum; i++) {
+                        try {
+                            Double x = scan.nextDouble();
+                            Double y = scan.nextDouble();
+                            Double z = scan.nextDouble();
+                            Point3D tempPoint = new Point3D(x, y, z);
+                            model.vertices.add(tempPoint);
+                        }catch (Exception e){
+                            System.err.println("ERROR: Cannot parse vertices: \nStack Trace: ");
+                            e.printStackTrace();
+                            System.exit(-1);
                         }
+                        scan.nextLine();
+                    }
                     try {
                         for (int i = 0; i < model.faceNum; i++) {
                             Scanner str = new Scanner(scan.nextLine());
@@ -131,8 +131,8 @@ public class FileManager {
                         e.printStackTrace();
                         System.exit(-1);
                     }
-                    }
                 }
+            }
             scan.close();
         }
         catch (FileNotFoundException e) {
