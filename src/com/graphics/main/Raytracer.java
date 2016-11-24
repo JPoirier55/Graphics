@@ -4,7 +4,7 @@ import com.graphics.objects.*;
 /**
  * Created by Jake on 10/18/2016.
  */
-public class RayTracer {
+public class Raytracer {
     public static void main(String[] args) {
 
         if(args.length < 3){
