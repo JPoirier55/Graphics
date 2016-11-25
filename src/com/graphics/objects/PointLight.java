@@ -31,4 +31,14 @@ public class PointLight extends Light {
     public double getPosW() {
         return posW;
     }
+
+    @Override
+    public String toString() {
+        return "PointLight{" +
+                "posX=" + posX +
+                ", posY=" + posY +
+                ", posZ=" + posZ +
+                ", posW=" + posW +
+                '}';
+    }
 }

@@ -1,7 +1,5 @@
 package com.graphics.objects;
 
-import java.util.ListIterator;
-
 /**
  * Created by Jake on 11/24/2016.
  */
@@ -26,5 +24,14 @@ public class Light {
 
     public double getIntensityB() {
         return intensityB;
+    }
+
+    @Override
+    public String toString() {
+        return "Light{" +
+                "intensityR=" + intensityR +
+                ", intensityG=" + intensityG +
+                ", intensityB=" + intensityB +
+                '}';
     }
 }

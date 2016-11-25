@@ -13,7 +13,9 @@ import java.util.Collections;
 public class MyTests {
     Camera c = new Camera();
     Model m = new Model();
-    RayHandler r = new RayHandler(m, c);
+    ObjectHandler objectHandler = new ObjectHandler();
+    LightHandler lightHandler = new LightHandler();
+    RayHandler r = new RayHandler(objectHandler, c, lightHandler);
     PixelHandler p = new PixelHandler(r, c);
     @Test
     public void testPixel1(){
@@ -88,7 +90,7 @@ public class MyTests {
         System.out.println(UV);
 
     }
-//    @Test
+    //    @Test
 //    public void testModelLoad(){
 //        FileManager fileManager = new FileManager();
 //        Model model = new Model();
@@ -153,6 +155,14 @@ public class MyTests {
 //        }
 //    }
     @Test
+    public void testLoadSceneMoreComplex(){
+        FileManager fileManager = new FileManager();
+        Camera camera = new Camera();
+        LightHandler lightHandler = new LightHandler();
+        ObjectHandler objectHandler = new ObjectHandler();
+        fileManager.loadSceneFile("C:\\Users\\Jake\\git3\\Graphics\\src\\com\\graphics\\tests\\test_scene2.txt", camera, lightHandler, objectHandler);
+    }
+    @Test
     public void testLoadScene(){
         FileManager fileManager = new FileManager();
         Camera camera = new Camera();
@@ -174,6 +184,28 @@ public class MyTests {
         Model model = new Model();
         fileManager.loadMaterialFile(model, "C:\\Users\\Jake\\git3\\Graphics\\assets\\ColoredCube.mtl");
         System.out.println(model);
+    }
+    @Test
+    public void testShootRay(){
+        FileManager fileManager = new FileManager();
+        Camera camera = new Camera();
+        LightHandler lightHandler = new LightHandler();
+        ObjectHandler objectHandler = new ObjectHandler();
+        RayHandler rayHandler = new RayHandler(objectHandler, camera, lightHandler);
+//        fileManager.loadSceneFile("C:\\Users\\Jake\\git3\\Graphics\\src\\com\\graphics\\tests\\test_triangle_scene.txt", camera, lightHandler, objectHandler);
+        fileManager.loadSceneFile("C:\\Users\\Jake\\git3\\Graphics\\src\\com\\graphics\\tests\\sage_math_scene.txt", camera, lightHandler, objectHandler);
+        double[][] dv = {{1},{1},{7}};
+        double[][] lv = {{0},{0},{0}};
+//        rayHandler.shootRay(new DenseMatrix64F(lv), new DenseMatrix64F(dv));
+
+    }
+    @Test
+    public void testElementMulti(){
+        double[][] dv = {{1},{1},{7}};
+        double[][] lv = {{2},{3},{5}};
+        DenseMatrix64F result = new DenseMatrix64F(3,1);
+        elementMult(new DenseMatrix64F(lv), new DenseMatrix64F(dv), result);
+        System.out.println(result);
     }
 
 }

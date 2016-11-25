@@ -28,4 +28,12 @@ public class LightHandler {
     public void setPointLights(ArrayList<PointLight> pointLights) {
         this.pointLights = pointLights;
     }
+
+    @Override
+    public String toString() {
+        return "LightHandler{" +
+                "ambientLight=" + ambientLight +
+                ", pointLights=" + pointLights +
+                '}';
+    }
 }

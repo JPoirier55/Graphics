@@ -132,8 +132,8 @@ public class FileManager {
         }
     }
 
-    public void loadSceneFile(String camera_filename, Camera camera, LightHandler lightHandler, ObjectHandler objectHandler){
-        File inFile = new File(camera_filename);
+    public void loadSceneFile(String scene_filename, Camera camera, LightHandler lightHandler, ObjectHandler objectHandler){
+        File inFile = new File(scene_filename);
 
         try {
             Scanner scan = new Scanner(inFile);
@@ -162,7 +162,9 @@ public class FileManager {
                     camera.top = Double.parseDouble(str.split(" ")[4]);
                 }
                 else if (str.split(" ")[0].equals("d")) {
+                    System.out.println(str.split(" ")[1]);
                     camera.d = Double.parseDouble(str.split(" ")[1]);
+                    System.out.println("D: " + camera.d);
                     camera.dv_vect[0][0] = camera.d;
                     camera.dv_vect[1][0] = camera.d;
                     camera.dv_vect[2][0] = camera.d;
@@ -200,9 +202,9 @@ public class FileManager {
                 }
             }
             scan.close();
-//            for(int i =0; i < objectHandler.getSpheres().size(); i++){
-//                System.out.println(objectHandler.getSpheres().get(i).toString());
-//            }
+            System.out.println(lightHandler);
+            System.out.println(objectHandler);
+
         }
 
         catch (FileNotFoundException e) {

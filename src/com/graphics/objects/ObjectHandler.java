@@ -30,4 +30,11 @@ public class ObjectHandler {
         this.spheres = spheres;
     }
 
+    @Override
+    public String toString() {
+        return "ObjectHandler{" +
+                "models=" + models +
+                ", spheres=" + spheres +
+                '}';
+    }
 }
