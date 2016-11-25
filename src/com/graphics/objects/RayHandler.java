@@ -34,16 +34,16 @@ public class RayHandler {
 
         ArrayList temp_stvals = new ArrayList();
 
-        for(int i = 0; i < model.faceNum; i++) {
+        for(int i = 0; i < model.getFaceNum(); i++) {
 
-            int index_a = (int) model.faces.get(i).pointList.get(1);
-            int index_b = (int) model.faces.get(i).pointList.get(2);
-            int index_c = (int) model.faces.get(i).pointList.get(3);
+            int index_a = (int) model.getFaces().get(i).pointList.get(1);
+            int index_b = (int) model.getFaces().get(i).pointList.get(2);
+            int index_c = (int) model.getFaces().get(i).pointList.get(3);
 
             // Get 3 points of triangle
-            double[][] av_vect = {{model.vertices.get(index_a).getX()}, {model.vertices.get(index_a).getY()}, {model.vertices.get(index_a).getZ()}};
-            double[][] bv_vect = {{model.vertices.get(index_b).getX()}, {model.vertices.get(index_b).getY()}, {model.vertices.get(index_b).getZ()}};
-            double[][] cv_vect = {{model.vertices.get(index_c).getX()}, {model.vertices.get(index_c).getY()}, {model.vertices.get(index_c).getZ()}};
+            double[][] av_vect = {{model.getVertices().get(index_a).getX()}, {model.getVertices().get(index_a).getY()}, {model.getVertices().get(index_a).getZ()}};
+            double[][] bv_vect = {{model.getVertices().get(index_b).getX()}, {model.getVertices().get(index_b).getY()}, {model.getVertices().get(index_b).getZ()}};
+            double[][] cv_vect = {{model.getVertices().get(index_c).getX()}, {model.getVertices().get(index_c).getY()}, {model.getVertices().get(index_c).getZ()}};
             DenseMatrix64F Av = new DenseMatrix64F(av_vect);
             DenseMatrix64F Bv = new DenseMatrix64F(bv_vect);
             DenseMatrix64F Cv = new DenseMatrix64F(cv_vect);

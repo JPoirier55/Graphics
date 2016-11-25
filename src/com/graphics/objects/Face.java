@@ -7,9 +7,11 @@ import java.util.ArrayList;
  */
 public class Face {
     public ArrayList pointList;
+    public Material material;
 
-    public Face(){
+    public Face(Material material){
         this.pointList = new ArrayList();
+        this.material = material;
     }
 
     public void addPoint(int point){
@@ -18,10 +20,18 @@ public class Face {
 
     @Override
     public String toString() {
-        String points = "";
-        for (int i = 0; i < pointList.size(); i++){
-            points += pointList.get(i) + " ";
-        }
-        return points;
+        return "Face{" +
+                "pointList=" + pointList +
+                ", material=" + material +
+                '}';
     }
+
+    //    @Override
+//    public String toString() {
+//        String points = "";
+//        for (int i = 0; i < pointList.size(); i++){
+//            points += pointList.get(i) + " ";
+//        }
+//        return points;
+//    }
 }
