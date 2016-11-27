@@ -4,6 +4,7 @@ import static org.ejml.ops.CommonOps.*;
 import static org.ejml.ops.NormOps.normF;
 import static org.junit.Assert.*;
 import com.graphics.objects.*;
+import com.sun.org.apache.bcel.internal.generic.DNEG;
 import org.ejml.data.DenseMatrix64F;
 import org.junit.Test;
 
@@ -193,10 +194,12 @@ public class MyTests {
         ObjectHandler objectHandler = new ObjectHandler();
         RayHandler rayHandler = new RayHandler(objectHandler, camera, lightHandler);
 //        fileManager.loadSceneFile("C:\\Users\\Jake\\git3\\Graphics\\src\\com\\graphics\\tests\\test_triangle_scene.txt", camera, lightHandler, objectHandler);
-        fileManager.loadSceneFile("C:\\Users\\Jake\\git3\\Graphics\\src\\com\\graphics\\tests\\sage_math_scene.txt", camera, lightHandler, objectHandler);
+        fileManager.loadSceneFile("C:\\Users\\Jake\\git3\\Graphics\\src\\com\\graphics\\tests\\test_model_scene.txt", camera, lightHandler, objectHandler);
         double[][] dv = {{1},{1},{7}};
         double[][] lv = {{0},{0},{0}};
-//        rayHandler.shootRay(new DenseMatrix64F(lv), new DenseMatrix64F(dv));
+        DenseMatrix64F color = new DenseMatrix64F(3,1);
+//        rayHandler.shootRay(new DenseMatrix64F(lv), new DenseMatrix64F(dv), color);
+        System.out.println(color);
 
     }
     @Test

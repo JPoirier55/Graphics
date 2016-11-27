@@ -1,0 +1,10 @@
+eye 4 0 -2
+look 0 0 0
+up 0 0 1
+d 1
+bounds -1 -1 1 1
+res 512 512
+ambient 0.7 0.7 0.7
+light 1 0 -1 1 .6 .6 .6
+light 3 0 -1 1 .7 .7 .7
+model 0 0 0 1.0 0.0 0.0 0.0 temple.obj

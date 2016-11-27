@@ -86,6 +86,10 @@ public class FileManager {
     public void loadPointsObj(Model model, String filename){
         File inFile = new File(filename);
 
+        double normX = 0;
+        double normY = 0;
+        double normZ = 0;
+
         try {
             Scanner scan = new Scanner(inFile);
             String matName = "";
@@ -99,25 +103,35 @@ public class FileManager {
                     matName = str.split(" ")[1];
 
                 }
-                else if(str.split(" ")[0].equals("v") || str.split(" ")[0].equals("f")){
+                else if(str.split(" ")[0].equals("v") || str.split(" ")[0].equals("f") || str.split(" ")[0].equals("vn")){
+
                     if(str.split(" ")[0].equals("v")){
                         String[] line = str.split(" ");
                         double vX = Double.parseDouble(line[1]);
                         double vY = Double.parseDouble(line[2]);
                         double vZ = Double.parseDouble(line[3]);
                         model.getVertices().add(new Point3D(vX, vY, vZ));
-                    }else{
+                    }else if(str.split(" ")[0].equals("vn")) {
+                        String[] line = str.split(" ");
+                        normX = Double.parseDouble(line[1]);
+                        normY = Double.parseDouble(line[2]);
+                        normZ = Double.parseDouble(line[3]);
+                    }
+                    else{
                         String[] line = str.split(" ");
                         int f1 = Integer.parseInt(line[1].split("/")[0]);
                         int f2 = Integer.parseInt(line[2].split("/")[0]);
                         int f3 = Integer.parseInt(line[3].split("/")[0]);
 
-                        for(int i = 0; i < model.getMaterialHandler().getMaterials().size(); i++){
-                            if(model.getMaterialHandler().getMaterials().get(i).getName().equals(matName)){
+                        for (int i = 0; i < model.getMaterialHandler().getMaterials().size(); i++) {
+                            if (model.getMaterialHandler().getMaterials().get(i).getName().equals(matName)) {
                                 Face face = new Face(model.getMaterialHandler().getMaterials().get(i));
                                 face.addPoint(f1);
                                 face.addPoint(f2);
                                 face.addPoint(f3);
+                                face.setNormX(normX);
+                                face.setNormY(normY);
+                                face.setNormZ(normZ);
                                 model.getFaces().add(face);
                             }
                         }
@@ -192,6 +206,7 @@ public class FileManager {
                             Double.parseDouble(line[2]), Double.parseDouble(line[3]),
                             Double.parseDouble(line[4]), Double.parseDouble(line[5]),
                             Double.parseDouble(line[6]), Double.parseDouble(line[7])));
+
                 }
                 else if(str.contains("model")){
                     String[] line = str.split(" ");
