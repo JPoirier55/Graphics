@@ -84,6 +84,7 @@ public class FileManager {
     }
 
     public void loadPointsObj(Model model, String filename){
+        int vertnum = 0;
         File inFile = new File(filename);
 
         double normX = 0;
@@ -110,6 +111,9 @@ public class FileManager {
                         double vX = Double.parseDouble(line[1]);
                         double vY = Double.parseDouble(line[2]);
                         double vZ = Double.parseDouble(line[3]);
+//                        System.out.println("NUMBER: " + vertnum + " :"+ vX + " " + vY + " " + vZ);
+                        vertnum++;
+
                         model.getVertices().add(new Point3D(vX, vY, vZ));
                     }else if(str.split(" ")[0].equals("vn")) {
                         String[] line = str.split(" ");
@@ -132,7 +136,10 @@ public class FileManager {
                                 face.setNormX(normX);
                                 face.setNormY(normY);
                                 face.setNormZ(normZ);
+//                                System.out.println(face);
                                 model.getFaces().add(face);
+//                                System.out.println(model.getFaces().get())
+
                             }
                         }
                     }

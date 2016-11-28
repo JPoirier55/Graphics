@@ -169,7 +169,7 @@ public class MyTests {
         Camera camera = new Camera();
         LightHandler lightHandler = new LightHandler();
         ObjectHandler objectHandler = new ObjectHandler();
-        fileManager.loadSceneFile("C:\\Users\\Jake\\git3\\Graphics\\src\\com\\graphics\\tests\\test_scene.txt", camera, lightHandler, objectHandler);
+        fileManager.loadSceneFile("C:\\Users\\Jake\\git3\\Graphics\\assets\\scenes\\scene3.txt", camera, lightHandler, objectHandler);
     }
     @Test
     public void testFileLoad(){
