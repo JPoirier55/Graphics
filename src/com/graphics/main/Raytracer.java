@@ -29,7 +29,7 @@ public class Raytracer {
     }
 
     private static int usage(){
-        System.err.println("USAGE: java RayTracer <input PLY file> <input Camera File> <output file name");
+        System.err.println("USAGE: java Raytracer <input Camera File> <input PLY file> <output file name");
         return -1;
     }
 

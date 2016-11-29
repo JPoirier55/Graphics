@@ -82,21 +82,17 @@ public class RayHandler {
 
 
             if(stval >0 && sbeta>=0 && sgamma >=0 && (sbeta+sgamma)<=1){
-                temp_stvals.add(new BigDecimal(String.valueOf(stval)).setScale(5, BigDecimal.ROUND_HALF_UP).doubleValue());
+                temp_stvals.add(stval);
             }
         }
         double minval = 0;
         // Find the minimum value of all t vals
         if(temp_stvals.size() >= 1){
             minval = (double)Collections.min(temp_stvals);
-        }else{
-            minval = 0;
         }
-
         if(minval == 0.0){
             minval = -1;
         }
-
         return minval;
     }
 }

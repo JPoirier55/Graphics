@@ -60,8 +60,8 @@ public class PixelHandler {
     }
 
     private DenseMatrix64F[] pixel(int i, int j){
-        double px = (double)(i/(camera.width-1)*(camera.right-camera.left)+camera.left);
-        double py = (double)(j/(camera.height-1)*(camera.top-camera.bottom)+camera.bottom);
+        double px = (double)i/(camera.width-1)*(camera.right-camera.left)+camera.left;
+        double py = (double)j/(camera.height-1)*(camera.top-camera.bottom)+camera.bottom;
         DenseMatrix64F temp = new DenseMatrix64F(3,1);
         DenseMatrix64F temp2 = new DenseMatrix64F(3,1);
         DenseMatrix64F temp3 = new DenseMatrix64F(3,1);
@@ -117,9 +117,9 @@ public class PixelHandler {
 
         }else{
 
-            double ratio = (2 * (stval - minT)) / (maxT - minT);
-            int red = (int) Math.round(Math.max(0, 255 * (1 - ratio)));
-            int blue = (int) Math.round(Math.max(0, 255 * (ratio - 1)));
+            double ratio = 2 * (stval - minT) / (maxT - minT);
+            int red = (int) Math.max(0, 255 * (1 - ratio));
+            int blue = (int) Math.max(0, 255 * (ratio - 1));
             int green = 255 - red - blue;
             temp = red + " " + green + " " + blue;
         }
