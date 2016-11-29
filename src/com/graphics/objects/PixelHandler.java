@@ -51,12 +51,9 @@ public class PixelHandler {
                 DenseMatrix64F[] matrix_arr = pixel(i,((int)camera.height-j-1));
                 Ray ray = new Ray(1000000);
 
-
                 rayHandler.shootRay(matrix_arr[0], matrix_arr[1], ray);
-
                 double[][] color_v = {{ray.getColorR()},{ray.getColorG()}, {ray.getColorB()}};
                 DenseMatrix64F color = new DenseMatrix64F(color_v);
-//                System.out.println(color);
 
                 double[] colors = truncate_values(color.get(0,0), color.get(1,0), color.get(2,0));
                 pixel_arr[i][j] = (int)(255*colors[0]) + " " + (int)(255*colors[1]) + " " + (int)(255*colors[2]);
@@ -107,10 +104,6 @@ public class PixelHandler {
         add(temp5, temp3, pixpt);// ((WV* near) + EV) + (UV * px) + (VV * py)
         subtract(pixpt, EV, ray_matrix);
         divide(ray_matrix, normF(ray_matrix));
-//        scale(camera.near, ray_matrix, temp6);
-//        add(temp6, pixpt, raypt);
-//        System.out.println(pixpt);//Lv
-//        System.out.println(ray_matrix);//Uv
 
         DenseMatrix64F[] pts_rays = new DenseMatrix64F[]{pixpt, ray_matrix};
         return pts_rays;

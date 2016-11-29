@@ -17,21 +17,17 @@ public class Raytracer {
         Camera camera = new Camera();
         LightHandler lightHandler = new LightHandler();
         ObjectHandler objectHandler = new ObjectHandler();
+        System.out.println("Loading scene....");
         fileManager.loadSceneFile(scene_filename, camera, lightHandler, objectHandler);
-//        System.out.println(camera);
-
+        System.out.println("Starting render....");
         RayHandler rayHandler = new RayHandler(objectHandler, camera, lightHandler);
 
         PixelHandler p = new PixelHandler(rayHandler, camera);
         p.pixels();
         fileManager.writePPM(p, args[1], camera);
-//        System.out.println("Starting depth trace....");
-//        p.pixels();
-//        p.getMaxes();
-//        p.pixelsetter();
-//        fileManager.writePPM(p, args[2], camera);
-//        System.out.println("Finished depth trace.");
-//        System.out.println("Output file: "+args[2]);
+
+        System.out.println("Finished render.");
+        System.out.println("Output file: "+args[1]);
     }
 
     private static int usage(){

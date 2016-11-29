@@ -19,7 +19,6 @@ public class RayHandler {
     public ObjectHandler objectHandler;
     public Camera camera;
     public LightHandler lightHandler;
-    public ArrayList<Ray> rays;
 
     public RayHandler(ObjectHandler objectHandler, Camera camera, LightHandler lightHandler) {
         this.lightHandler = lightHandler;
@@ -41,29 +40,20 @@ public class RayHandler {
         DenseMatrix64F temp1 = new DenseMatrix64F(3, 1);
         DenseMatrix64F temp2 = new DenseMatrix64F(3, 1);
         DenseMatrix64F YV = new DenseMatrix64F(3, 1);
-        this.rays = new ArrayList<>();
-        ArrayList<Ray> raylist = new ArrayList<>();
 
         divide(Dv, normF(Dv));
-
-        double min_stval = 100000000;
 
         DenseMatrix64F color = new DenseMatrix64F(3, 1);
 
         for (int i = 0; i < objectHandler.getModels().size(); i++) {
             Model model = objectHandler.getModels().get(i);
             for (int j = 0; j < model.getFaces().size(); j++) {
-//                System.out.println(model.getFaces().size());
                 Ray tempray = new Ray(0);
 
                 Face face = model.getFaces().get(j);
                 int index_a = (int) face.pointList.get(0) - 1;
                 int index_b = (int) face.pointList.get(1) - 1;
                 int index_c = (int) face.pointList.get(2) - 1;
-//                System.out.println(index_a + " " + index_b + " " + index_c);
-
-//                double[][] normal = {{face.getNormX()}, {face.getNormY()}, {face.getNormZ()}};
-//                DenseMatrix64F N = new DenseMatrix64F(normal);
 
                 // Get 3 points of triangle
                 double[][] av_vect = {{model.getVertices().get(index_a).getX()}, {model.getVertices().get(index_a).getY()}, {model.getVertices().get(index_a).getZ()}};
@@ -74,6 +64,7 @@ public class RayHandler {
                 DenseMatrix64F Bv = new DenseMatrix64F(bv_vect);
                 DenseMatrix64F Cv = new DenseMatrix64F(cv_vect);
 
+                // Calculate normal
                 DenseMatrix64F aminusb = new DenseMatrix64F(3,1);
                 subtract(Av, Bv, aminusb);
                 DenseMatrix64F bminusc = new DenseMatrix64F(3,1);
@@ -81,19 +72,10 @@ public class RayHandler {
                 DenseMatrix64F N = cross(new DenseMatrix64F(aminusb), new DenseMatrix64F(bminusc));
                 divide(N, normF(N));
 
-
-//                System.out.println(j);
-//                System.out.println(Av);
-//                System.out.println(Bv);
-//                System.out.println(Cv);
-//                System.out.println(N);
-//
-
                 // Get camera coordinates for look at point to triangle
                 subtract(Av, Lv, YV);
                 subtract(Av, Bv, temp1);
                 subtract(Av, Cv, temp2);
-
 
                 DenseMatrix64F MM = new DenseMatrix64F(3, 3);
                 for (int k = 0; k < 3; k++) {
@@ -163,7 +145,6 @@ public class RayHandler {
 
                                 scale(dot(N, toL), diffuse, scaled_diffuse);
                                 add(color, scaled_diffuse, color);
-//                            System.out.println(color);
 
 
                                 //toC    = ray['L'] - ptos; toC = toC / toC.norm()
@@ -185,11 +166,6 @@ public class RayHandler {
                                 add(color, scaled_specular, color);
                             }
                         }
-//                        tempray.setStval(stval);
-//                        tempray.setColorR(color.get(0, 0));
-//                        tempray.setColorG(color.get(1, 0));
-//                        tempray.setColorB(color.get(2, 0));
-//                        raylist.add(tempray);
                         ray.setStval(stval);
                         ray.setColorR(color.get(0, 0));
                         ray.setColorG(color.get(1, 0));
@@ -199,20 +175,6 @@ public class RayHandler {
                 }
             }
         }
-
-//        for(int i = 0; i < raylist.size(); i++){
-//            if(raylist.get(i).getStval() < min_stval){
-//                min_stval = raylist.get(i).getStval();
-//                ray.setColorR(raylist.get(i).getColorR());
-//                ray.setColorG(raylist.get(i).getColorG());
-//                ray.setColorB(raylist.get(i).getColorB());
-////                System.out.println(raylist.get(i).getColorR());
-//            }
-//        }
-//        raylist.clear();
-
-
-
 
         for (int i = 0; i < objectHandler.getSpheres().size(); i++) {
             Sphere sphere = objectHandler.getSpheres().get(i);
