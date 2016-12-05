@@ -11,8 +11,9 @@ public class Sphere {
     private double materialR;
     private double materialG;
     private double materialB;
+    private double materialK;
 
-    public Sphere(double posX, double posY, double posZ, double radius, double materialR, double materialG, double materialB) {
+    public Sphere(double posX, double posY, double posZ, double radius, double materialR, double materialG, double materialB, double materialK) {
         this.posX = posX;
         this.posY = posY;
         this.posZ = posZ;
@@ -20,6 +21,21 @@ public class Sphere {
         this.materialR = materialR;
         this.materialG = materialG;
         this.materialB = materialB;
+        this.materialK = materialK;
+    }
+
+    @Override
+    public String toString() {
+        return "Sphere{" +
+                "posX=" + posX +
+                ", posY=" + posY +
+                ", posZ=" + posZ +
+                ", radius=" + radius +
+                ", materialR=" + materialR +
+                ", materialG=" + materialG +
+                ", materialB=" + materialB +
+                ", materialK=" + materialK +
+                '}';
     }
 
     public double getPosX() {
@@ -78,16 +94,11 @@ public class Sphere {
         this.materialB = materialB;
     }
 
-    @Override
-    public String toString() {
-        return "Sphere{" +
-                "posX=" + posX +
-                ", posY=" + posY +
-                ", posZ=" + posZ +
-                ", radius=" + radius +
-                ", materialR=" + materialR +
-                ", materialG=" + materialG +
-                ", materialB=" + materialB +
-                '}';
+    public double getMaterialK() {
+        return materialK;
+    }
+
+    public void setMaterialK(double materialK) {
+        this.materialK = materialK;
     }
 }

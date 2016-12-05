@@ -2,6 +2,9 @@ package com.graphics.objects;
 
 import org.ejml.data.DenseMatrix64F;
 
+import static org.ejml.ops.CommonOps.divide;
+import static org.ejml.ops.NormOps.normF;
+
 /**
  * Created by Jake on 10/19/2016.
  */

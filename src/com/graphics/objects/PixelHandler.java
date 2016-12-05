@@ -13,6 +13,7 @@ public class PixelHandler {
     private Camera camera;
     public double maxT, minT;
     private RayHandler rayHandler;
+    private RayHandler2 rayHandler2;
     public String[][] pixel_arr;
     private ArrayList stvals;
     private double[][] stArr;
@@ -24,8 +25,9 @@ public class PixelHandler {
     public DenseMatrix64F UV;
     public DenseMatrix64F VV;
 
-    public PixelHandler(RayHandler rayHandler, Camera camera){
+    public PixelHandler(RayHandler rayHandler, RayHandler2 rayHandler2, Camera camera){
         this.rayHandler = rayHandler;
+        this.rayHandler2 = rayHandler2;
         this.camera = camera;
         this.maxT = 0;
         this.minT = 100000000;
@@ -51,7 +53,7 @@ public class PixelHandler {
                 DenseMatrix64F[] matrix_arr = pixel(i,((int)camera.height-j-1));
                 Ray ray = new Ray(1000000);
 
-                rayHandler.shootRay(matrix_arr[0], matrix_arr[1], ray);
+                rayHandler2.shootRay(matrix_arr[0], matrix_arr[1], ray);
                 double[][] color_v = {{ray.getColorR()},{ray.getColorG()}, {ray.getColorB()}};
                 DenseMatrix64F color = new DenseMatrix64F(color_v);
 
@@ -60,6 +62,36 @@ public class PixelHandler {
             }
         }
     }
+
+    public void pixels2(){
+
+        WV = new DenseMatrix64F(3,1);
+        stvals = new ArrayList();
+
+        subtract(EV, LV, WV);
+        divide(WV,normF(WV));
+        UV = new DenseMatrix64F(cross(new DenseMatrix64F(UP), new DenseMatrix64F(WV)));
+        divide(UV,normF(UV));
+        VV = new DenseMatrix64F(cross(new DenseMatrix64F(WV), new DenseMatrix64F(UV)));
+
+        pixel_arr = new String[camera.resX][camera.resY];
+        for(int i = 0; i < camera.resX ; i++){
+            for(int j = 0; j < camera.resY; j++){
+                Ray2 pixel_ray = pixel2(i,((int)camera.height-j-1));
+                DenseMatrix64F color = new DenseMatrix64F(3,1);
+                double[][] refatt_v = {{.8}, {.8}, {.8}};
+                DenseMatrix64F refatt = new DenseMatrix64F(refatt_v);
+                DenseMatrix64F accum = rayHandler.rayTrace(pixel_ray, color, refatt, 3);
+                double[][] color_v = {{accum.get(0)},{accum.get(1)}, {accum.get(2)}};
+                DenseMatrix64F returnColor = new DenseMatrix64F(color_v);
+
+                double[] colors = truncate_values(returnColor.get(0,0), returnColor.get(1,0), returnColor.get(2,0));
+                pixel_arr[i][j] = (int)(255*colors[0]) + " " + (int)(255*colors[1]) + " " + (int)(255*colors[2]);
+            }
+        }
+    }
+
+
     private double[] truncate_values(double red, double green, double blue){
         if(red > 1){
             red = 1;
@@ -81,6 +113,30 @@ public class PixelHandler {
             }
             System.out.println();
         }
+    }
+    private Ray2 pixel2(int i, int j){
+        double px = (double)i/(camera.width-1)*(camera.right-camera.left)+camera.left;
+        double py = (double)j/(camera.height-1)*(camera.top-camera.bottom)+camera.bottom;
+
+        DenseMatrix64F temp = new DenseMatrix64F(3,1);
+        DenseMatrix64F temp2 = new DenseMatrix64F(3,1);
+        DenseMatrix64F temp3 = new DenseMatrix64F(3,1);
+        DenseMatrix64F temp4 = new DenseMatrix64F(3,1);
+        DenseMatrix64F temp5 = new DenseMatrix64F(3,1);
+        DenseMatrix64F temp6 = new DenseMatrix64F(3,1);
+        DenseMatrix64F pixpt = new DenseMatrix64F(3,1);
+        DenseMatrix64F raypt = new DenseMatrix64F(3,1);
+        DenseMatrix64F ray_matrix = new DenseMatrix64F(3,1);
+        scale(camera.near, WV, temp); // WV * near
+        scale(px, UV, temp2); // UV * px
+        scale(py, VV, temp3); // VV * py
+        add(EV, temp, temp4); // (WV* near) + EV
+        add(temp4, temp2, temp5); // ((WV* near) + EV) + (UV * px)
+        add(temp5, temp3, pixpt);// ((WV* near) + EV) + (UV * px) + (VV * py)
+        subtract(pixpt, EV, ray_matrix);
+        divide(ray_matrix, normF(ray_matrix));
+        Ray2 ray = new Ray2(pixpt, ray_matrix);
+        return ray;
     }
 
     private DenseMatrix64F[] pixel(int i, int j){

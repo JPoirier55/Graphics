@@ -197,7 +197,8 @@ public class FileManager {
                     objectHandler.getSpheres().add(new Sphere(Double.parseDouble(line[1]),
                             Double.parseDouble(line[2]), Double.parseDouble(line[3]),
                             Double.parseDouble(line[4]), Double.parseDouble(line[5]),
-                            Double.parseDouble(line[6]), Double.parseDouble(line[7])));
+                            Double.parseDouble(line[6]), Double.parseDouble(line[7]),
+                            Double.parseDouble(line[8])));
 
                 }
                 else if(str.contains("model")){

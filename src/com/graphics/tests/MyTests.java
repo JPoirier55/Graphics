@@ -17,7 +17,8 @@ public class MyTests {
     ObjectHandler objectHandler = new ObjectHandler();
     LightHandler lightHandler = new LightHandler();
     RayHandler r = new RayHandler(objectHandler, c, lightHandler);
-    PixelHandler p = new PixelHandler(r, c);
+    RayHandler2 r2 = new RayHandler2(objectHandler, c, lightHandler);
+    PixelHandler p = new PixelHandler(r, r2, c);
     @Test
     public void testPixel1(){
         p.minT = .1675476;
