@@ -10,22 +10,22 @@ public class Raytracer {
 
         if(args.length == 0){
             FileManager fileManager = new FileManager();
-            String scene_filename = "../assets/scenes/finalscene.txt";
+            String scene_filename = "finalscene.txt";
             Camera camera = new Camera();
             LightHandler lightHandler = new LightHandler();
             ObjectHandler objectHandler = new ObjectHandler();
-            System.out.println("Loading scene....");
+            System.out.println("Loading masterwork scene....");
             fileManager.loadSceneFile(scene_filename, camera, lightHandler, objectHandler);
             System.out.println("Starting render....");
             RayHandler rayHandler = new RayHandler(objectHandler, camera, lightHandler);
             RayHandler2 rayHandler2 = new RayHandler2(objectHandler, camera, lightHandler);
 
             PixelHandler p = new PixelHandler(rayHandler, rayHandler2, camera);
-            p.pixels();
-            fileManager.writePPM(p, "../assets/finalscene.ppm", camera);
+            p.pixels2();
+            fileManager.writePPM(p, "masterwork.ppm", camera);
 
             System.out.println("Finished render.");
-            System.out.println("Output file: finalscene.ppm");
+            System.out.println("Output file: masterwork.ppm");
         }else {
             FileManager fileManager = new FileManager();
             String fileName = cleanFileName(args[0]);
@@ -49,7 +49,7 @@ public class Raytracer {
     }
 
     private static int usage(){
-        System.err.println("USAGE: java Raytracer <input Scene File>  <output file name>");
+        System.err.println("USAGE: java Raytracer [<input Scene File>]  [<output file name>]");
         return -1;
     }
 

@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 public class FileManager {
 
-    private String ASSETS_DIR = System.getProperty("user.dir") + "\\assets\\";
+    private String ASSETS_DIR = System.getProperty("user.dir") + "/";
 
     public FileManager(){}
 
